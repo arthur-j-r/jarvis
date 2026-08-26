@@ -22,7 +22,8 @@ class Jarvis:
         self.me = 'Jarvis'
         self.username = username
     def saudar_usuario(self):
-        print(f'Olá {self.username}, eu sou {self.me}, seu assistente virtual')
+        print(f'Olá {self.username}, eu sou {self.me}, seu assistente virtual.')
+        print('Como posso ajudá-lo hoje?')
     def abrir_programa(self,programa):
         try:
             pyautogui.press('win')
