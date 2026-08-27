@@ -9,11 +9,6 @@ from PIL import Image
 
 sounddevice.default.device = 'Microfone (Realtek(R) Audio)'
 
-
-
-
-
-
 pyautogui.PAUSE = 0.3
 pyautogui.FAILSAFE = True
 
