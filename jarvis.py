@@ -80,5 +80,5 @@ class Jarvis:
             print(f'Erro ao desligar o computador: {e}')
 
 jarvis = Jarvis('Arthur')
-jarvis.saudar_usuario()
+
 
