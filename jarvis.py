@@ -1,3 +1,4 @@
+from autentication import chat_gpt_autentication
 import pyautogui
 import sounddevice
 import speech_recognition as sr
@@ -6,6 +7,19 @@ import os
 import sys
 import subprocess
 from PIL import Image
+from openai import OpenAI
+
+
+def chamar_chat_gpt(conteudo):
+    client = OpenAI(api_key=chat_gpt_autentication)
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Você é um assistente virtual chamado Jarvis."},
+            {"role": "user", "content": conteudo}
+        ]
+    )
+    return response.choices[0].message.content
 
 sounddevice.default.device = 'Microfone (Realtek(R) Audio)'
 
@@ -79,6 +93,6 @@ class Jarvis:
         except Exception as e:
             print(f'Erro ao desligar o computador: {e}')
 
-jarvis = Jarvis('Arthur')
+
 
 
