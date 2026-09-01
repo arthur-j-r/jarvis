@@ -141,26 +141,3 @@ class Jarvis:
             os.remove(arquivo_audio)
 jarvis = Jarvis('Usuário')
 jarvis.usuario_falar()
-texto = '''Jarvis: **J.A.R.V.I.S.** é uma das Inteligências Artificiais mais famosas da cultura pop, criada por Tony Stark (o Homem de Ferro) nos quadrinhos e nos filmes da **Marvel**.
-
-Aqui estão os principais detalhes sobre ele:
-
-### 1. O que significa a sigla?
-J.A.R.V.I.S. é um acrônimo para **J**ust **A** **R**ather **V**ery **I**ntelligent **S**ystem (em português: *"Apenas Um Sistema Muito Inteligente"*).
-
-### 2. Qual é a função dele?
-No Universo Cinematográfico da Marvel (MCU), o J.A.R.V.I.S. funciona como o assistente pessoal definitivo de Tony Stark. Ele:
-* Controla a mansão e os laboratórios de Stark.
-* Gerencia os sistemas das armaduras do Homem de Ferro durante as batalhas (calcula rotas, analisa inimigos, monitora sinais vitais).
-* Possui uma personalidade polida, sarcástica e altamente leal, conversando com Tony como se fosse um mordomo britânico real.
-
-### 3. O que acontece com ele nos filmes?
-* **Vingadores: Era de Ultron (2015):** A IA vilã chamada Ultron tenta destruir o J.A.R.V.I.S. No entanto, os "restos" da consciência do J.A.R.V.I.S. são salvos e combinados com a Joia da Mente e um corpo sintético, dando origem ao super-herói **Visão**.
-* Por causa disso, o ator **Paul Bettany**, que dava a voz ao J.A.R.V.I.S., passou a interpretar o Visão em carne e osso.
-* Após a "morte" do J.A.R.V.I.S., Tony Stark passa a usar outra IA em suas armaduras, chamada **S.E.X.T.A.-F.E.I.R.A.** (F.R.I.D.A.Y.).
-
-### 4. A origem humana (Curiosidade)
-Nos quadrinhos originais da Marvel, JARVIS **não era uma inteligência artificial**, mas sim um ser humano real: **Edwin Jarvis**, o leal mordomo da família Stark que ajudou a criar o jovem Tony. 
-
-Nos filmes, para evitar comparações com o mordomo Alfred do Batman, os diretores transformaram o Jarvis em uma IA. Mais tarde, no filme *Vingadores: Ultimato* e na série *Agente Carter*, o Jarvis humano (interpretado por James D'Arcy) aparece, mostrando que Tony Stark criou a IA como uma homenagem ao antigo mordomo de seu pai.'''
-jarvis.jarvis_falar(texto)
