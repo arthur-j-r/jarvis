@@ -150,13 +150,14 @@ class Jarvis:
         playsound(arquivo_audio)
         if os.path.exists(arquivo_audio):
             os.remove(arquivo_audio)
+
+'''
+## EX DE USO ##            
 jarvis = Jarvis('Usuário')
 jarvis.saudar_usuario()
 jarvis.abrir_programa('google chrome')
 time.sleep(5)
 jarvis.fechar_programa('google chrome')
 jarvis.pesquisar('Python programming language')
-jarvis.tirar_print('screenshot.png')
-time.sleep(2)
-jarvis.abrir_arquivo('C:\\Users\\arthu\\Documents\\ProjetosVsCodePython\\Jarvis\\screenshot.png')
+'''
 
