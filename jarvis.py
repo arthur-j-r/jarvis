@@ -151,10 +151,11 @@ class Jarvis:
         if os.path.exists(arquivo_audio):
             os.remove(arquivo_audio)
 
-'''
-## EX DE USO ##            
-jarvis = Jarvis('Usuário')
+
+## EX DE USO           
+jarvis = Jarvis('Arthur')
 jarvis.saudar_usuario()
+'''
 jarvis.abrir_programa('google chrome')
 time.sleep(5)
 jarvis.fechar_programa('google chrome')
