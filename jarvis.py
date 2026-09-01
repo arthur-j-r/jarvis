@@ -1,7 +1,9 @@
 from autentication import chat_gpt_autentication
 import pyautogui
+import pyaudiowpatch
 import sounddevice
 import speech_recognition as sr
+import requests
 import time
 import os
 import sys
@@ -21,7 +23,6 @@ def chamar_chat_gpt(conteudo):
     )
     return response.choices[0].message.content
 
-sounddevice.default.device = 'Microfone (Realtek(R) Audio)'
 
 pyautogui.PAUSE = 0.3
 pyautogui.FAILSAFE = True
@@ -93,6 +94,29 @@ class Jarvis:
         except Exception as e:
             print(f'Erro ao desligar o computador: {e}')
 
+    def usuario_falar(self):
+        # Configurações do áudio
+        sample_rate = 16000
+        duration = 5  # Segundos que ele vai gravar
 
+        print("Gravando... Fale agora!")
+        # Grava diretamente pelo sounddevice
+        audio_data = sounddevice.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
+        sounddevice.wait()  # Aguarda terminar a gravação
 
+        # Converte para o formato que o SpeechRecognition entende
+        audio_bytes = audio_data.tobytes()
+        audio_file = sr.AudioData(audio_bytes, sample_rate, 2)
+
+        # Reconhecimento via Google
+        rec = sr.Recognizer()
+        try:
+            texto = rec.recognize_google(audio_file, language="pt-BR")
+            print(f"Você disse: {texto}")
+            return texto
+        except sr.UnknownValueError:
+            print("Não entendi o áudio.")
+            return None
+jarvis = Jarvis('Usuário')
+jarvis.usuario_falar()
 
