@@ -1,24 +1,26 @@
-import speech_recognition as sr
-import sounddevice as sd
-import numpy as np
+import asyncio
+import edge_tts
+from playsound import playsound
+import os
 
-# Configurações do áudio
-sample_rate = 16000
-duration = 5  # Segundos que ele vai gravar
+async def jarvis_falar(texto):
+    voz = "pt-BR-AntonioNeural"
+    arquivo_audio = "jarvis_fala.mp3"
 
-print("Gravando... Fale agora!")
-# Grava diretamente pelo sounddevice
-audio_data = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
-sd.wait()  # Aguarda terminar a gravação
+    # +10% de velocidade e -2Hz no tom para um efeito mais sobrio e computacional
+    communicate = edge_tts.Communicate(
+        texto, 
+        voz, 
+        rate="+10%", 
+        pitch="-2Hz"
+    )
+    
+    await communicate.save(arquivo_audio)
+    playsound(arquivo_audio)
+    
+    # Remove o arquivo temporario para nao acumular no projeto
+    if os.path.exists(arquivo_audio):
+        os.remove(arquivo_audio)
 
-# Converte para o formato que o SpeechRecognition entende
-audio_bytes = audio_data.tobytes()
-audio_file = sr.AudioData(audio_bytes, sample_rate, 2)
-
-# Reconhecimento via Google
-rec = sr.Recognizer()
-try:
-    texto = rec.recognize_google(audio_file, language="pt-BR")
-    print(f"Você disse: {texto}")
-except sr.UnknownValueError:
-    print("Não entendi o áudio.")
+if __name__ == "__main__":
+    asyncio.run(jarvis_falar("Sistemas online, senhor. Em que posso ajudar hoje?"))

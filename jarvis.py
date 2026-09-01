@@ -1,10 +1,14 @@
 from autentication import chat_gpt_autentication
 import pyautogui
-import pyaudiowpatch
+import pyttsx3
 import sounddevice
 import speech_recognition as sr
 import requests
 import time
+import asyncio
+import edge_tts
+from playsound import playsound
+import os
 import os
 import sys
 import subprocess
@@ -117,6 +121,24 @@ class Jarvis:
         except sr.UnknownValueError:
             print("Não entendi o áudio.")
             return None
+    def jarvis_falar(self, texto):
+        voz = "pt-BR-AntonioNeural"
+        arquivo_audio = "jarvis_fala.mp3"
+
+        # +10% de velocidade e -2Hz no tom para um efeito mais sobrio e computacional
+        communicate = edge_tts.Communicate(
+            texto, 
+            voz, 
+            rate="+10%", 
+            pitch="-2Hz"
+        )
+        
+        asyncio.run(communicate.save(arquivo_audio))
+        playsound(arquivo_audio)
+        
+        # Remove o arquivo temporario para nao acumular no projeto
+        if os.path.exists(arquivo_audio):
+            os.remove(arquivo_audio)
 jarvis = Jarvis('Usuário')
 jarvis.usuario_falar()
-
+jarvis.jarvis_falar("Sistemas online, senhor. Em que posso ajudar hoje?")
