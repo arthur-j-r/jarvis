@@ -36,22 +36,27 @@ class Jarvis:
         self.me = 'Jarvis'
         self.username = username
     def saudar_usuario(self):
-        print(f'Olá {self.username}, eu sou {self.me}, seu assistente virtual.')
-        print('Como posso ajudá-lo hoje?')
+        saudacao = f'Olá Senhor {self.username}, eu sou {self.me}, seu assistente virtual. Como posso ajudá-lo hoje?'
+        print(saudacao)
+        self.jarvis_falar(texto=saudacao)
     def abrir_programa(self,programa):
         try:
             pyautogui.press('win')
             time.sleep(1)
             pyautogui.write(programa)
             pyautogui.press('enter')
-            print(f'Programa {programa} aberto com sucesso!')
+            programa_aberto = f'Programa {programa} aberto com sucesso!'
+            self.jarvis_falar(texto=programa_aberto)
+            print(programa_aberto)
         except Exception as e:
             print(f'Erro ao abrir o programa {programa}: {e}')
     def fechar_programa(self,programa=None):
         try:
             pyautogui.hotkey('alt','f4')
             if programa is not None:
-                print(f'Programa {programa} fechado com sucesso!')
+                programa_fechado = f'Programa {programa} fechado com sucesso!'
+                self.jarvis_falar(texto=programa_fechado)
+                print(programa_fechado)
         except Exception as e:
             print(f'Erro ao fechar o programa {programa}: {e}')
     def pesquisar(self,pesquisa):
@@ -67,6 +72,10 @@ class Jarvis:
             pyautogui.hotkey('ctrl','t')
             pyautogui.write(pesquisa)
             pyautogui.press('enter')
+            time.sleep(1)
+            pesquisa_realizada = f'Pesquisa "{pesquisa}" realizada com sucesso!'
+            self.jarvis_falar(texto=pesquisa_realizada)
+            print(pesquisa_realizada)
         except Exception as e:
             print(f'Erro ao realizar a pesquisa {pesquisa}: {e}')
     def abrir_arquivo(self,caminho_arquivo):
@@ -75,14 +84,18 @@ class Jarvis:
             time.sleep(1)
             pyautogui.write(caminho_arquivo)
             pyautogui.press('enter')
-            print(f'Arquivo {caminho_arquivo} aberto com sucesso!')
+            arquivo_aberto = f'Arquivo {caminho_arquivo} aberto com sucesso!'
+            self.jarvis_falar(texto=arquivo_aberto)
+            print(arquivo_aberto)
         except Exception as e:
             print(f'Erro ao abrir o arquivo {caminho_arquivo}: {e}')
     def tirar_print(self,nome_arquivo):
         try:
             screenshot = pyautogui.screenshot()
             screenshot.save(nome_arquivo)
-            print(f'Print da tela salvo como {nome_arquivo}')
+            captura = f'Print da tela salvo como {nome_arquivo}'
+            self.jarvis_falar(texto=captura)
+            print(captura)
         except Exception as e:
             print(f'Erro ao tirar print da tela: {e}')
     def desligar_computador(self):
@@ -92,9 +105,10 @@ class Jarvis:
             pyautogui.moveTo(x = 1127, y = 959, duration = 1)
             pyautogui.click()
             pyautogui.moveTo(x = 1089, y = 869, duration = 0.5)
-            time.sleep(0.5)
+            desligar = f'Desligando o computador...'
+            self.jarvis_falar(texto=desligar)
+            time.sleep(1)
             pyautogui.doubleClick()
-            print('Computador desligado com sucesso!')
         except Exception as e:
             print(f'Erro ao desligar o computador: {e}')
 
@@ -132,12 +146,17 @@ class Jarvis:
             rate="+10%", 
             pitch="-2Hz"
         )
-        
         asyncio.run(communicate.save(arquivo_audio))
         playsound(arquivo_audio)
-        
-        # Remove o arquivo temporario para nao acumular no projeto
         if os.path.exists(arquivo_audio):
             os.remove(arquivo_audio)
 jarvis = Jarvis('Usuário')
-jarvis.usuario_falar()
+jarvis.saudar_usuario()
+jarvis.abrir_programa('google chrome')
+time.sleep(5)
+jarvis.fechar_programa('google chrome')
+jarvis.pesquisar('Python programming language')
+jarvis.tirar_print('screenshot.png')
+time.sleep(2)
+jarvis.abrir_arquivo('C:\\Users\\arthu\\Documents\\ProjetosVsCodePython\\Jarvis\\screenshot.png')
+
