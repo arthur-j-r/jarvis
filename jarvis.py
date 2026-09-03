@@ -1,4 +1,3 @@
-from autenticacaov15 import chat_gpt_autentication
 import pyautogui
 import pyttsx3
 import sounddevice
@@ -26,8 +25,10 @@ class Jarvis:
        # self.integracao_gemini = enviar_mensagem
     def saudar_usuario(self):
         saudacao = f'Olá Senhor {self.username}, eu sou {self.me}, seu assistente virtual. Como posso ajudá-lo hoje?'
+        self.voz(texto=saudacao) 
         print(saudacao)
-        self.jarvis_responder(texto=saudacao)
+
+        
     def abrir_programa(self,programa):
         try:
             pyautogui.press('win')
@@ -35,7 +36,7 @@ class Jarvis:
             pyautogui.write(programa)
             pyautogui.press('enter')
             programa_aberto = f'Programa {programa} aberto com sucesso!'
-            self.jarvis_responder(texto=programa_aberto)
+            self.voz(texto=programa_aberto)
             print(programa_aberto)
         except Exception as e:
             print(f'Erro ao abrir o programa {programa}: {e}')
@@ -44,7 +45,7 @@ class Jarvis:
             pyautogui.hotkey('alt','f4')
             if programa is not None:
                 programa_fechado = f'Programa {programa} fechado com sucesso!'
-                self.jarvis_responder(texto=programa_fechado)
+                self.voz(texto=programa_fechado)
                 print(programa_fechado)
         except Exception as e:
             print(f'Erro ao fechar o programa {programa}: {e}')
@@ -63,7 +64,7 @@ class Jarvis:
             pyautogui.press('enter')
             time.sleep(1)
             pesquisa_realizada = f'Pesquisa "{pesquisa}" realizada com sucesso!'
-            self.jarvis_responder(texto=pesquisa_realizada)
+            self.voz(texto=pesquisa_realizada)
             print(pesquisa_realizada)
         except Exception as e:
             print(f'Erro ao realizar a pesquisa {pesquisa}: {e}')
@@ -74,7 +75,7 @@ class Jarvis:
             pyautogui.write(caminho_arquivo)
             pyautogui.press('enter')
             arquivo_aberto = f'Arquivo {caminho_arquivo} aberto com sucesso!'
-            self.jarvis_responder(texto=arquivo_aberto)
+            self.voz(texto=arquivo_aberto)
             print(arquivo_aberto)
         except Exception as e:
             print(f'Erro ao abrir o arquivo {caminho_arquivo}: {e}')
@@ -83,7 +84,7 @@ class Jarvis:
             screenshot = pyautogui.screenshot()
             screenshot.save(nome_arquivo)
             captura = f'Print da tela salvo como {nome_arquivo}'
-            self.jarvis_responder(texto=captura)
+            self.voz(texto=captura)
             print(captura)
         except Exception as e:
             print(f'Erro ao tirar print da tela: {e}')
@@ -95,7 +96,7 @@ class Jarvis:
             pyautogui.click()
             pyautogui.moveTo(x = 1089, y = 869, duration = 0.5)
             desligar = f'Desligando o computador...'
-            self.jarvis_responder(texto=desligar)
+            self.voz(texto=desligar)
             time.sleep(1)
             pyautogui.doubleClick()
         except Exception as e:
@@ -124,19 +125,11 @@ class Jarvis:
         except sr.UnknownValueError:
             print("Não entendi o áudio.")
             return None
-    def jarvis_responder(self, texto):
-        modo_ia = input("Deseja ativar a integração com a IA? (1 para sim, 0 para não): ")
-        if modo_ia == '1':
-            resposta = enviar_mensagem(texto, enabled=True)
-        elif modo_ia == '0':
-            resposta = texto
-        else:
-            print("Opção inválida. A integração com a IA não será ativada.")
-            resposta = texto
+    def voz(self, texto):
         voz = "pt-BR-AntonioNeural"
         arquivo_audio = "jarvis_fala.mp3"
         communicate = edge_tts.Communicate(
-            resposta, 
+            texto, 
             voz, 
             rate="+10%", 
             pitch="-2Hz"
@@ -144,14 +137,18 @@ class Jarvis:
         asyncio.run(communicate.save(arquivo_audio))
         playsound(arquivo_audio)
         if os.path.exists(arquivo_audio):
+
             os.remove(arquivo_audio)
+    def jarvis_responder(self, texto):
+        resposta = enviar_mensagem(texto, enabled=True)
+        self.voz(resposta)
 
-
-## EX DE USO           
-jarvis = Jarvis('Arthur')
-jarvis.saudar_usuario()
-fala = jarvis.usuario_falar()
-jarvis.pesquisar(fala)
+if __name__ == "__main__":
+    ## EX DE USO           
+    jarvis = Jarvis('Arthur')
+    jarvis.saudar_usuario()
+    fala = jarvis.usuario_falar()
+    jarvis.pesquisar(fala)
 
 
 
