@@ -22,7 +22,7 @@ class Jarvis:
     def __init__(self,username):
         self.me = 'Jarvis'
         self.username = username
-       # self.integracao_gemini = enviar_mensagem
+        self.em_espera = False
     def saudar_usuario(self):
         saudacao = f'Olá Senhor {self.username}, eu sou {self.me}, seu assistente virtual. Como posso ajudá-lo hoje?'
         self.voz(texto=saudacao) 
@@ -106,8 +106,8 @@ class Jarvis:
         # Configurações do áudio
         sample_rate = 16000
         duration = 5  # Segundos que ele vai gravar
-
-        print("Gravando... Fale agora!")
+        if not self.em_espera:
+            print("Gravando... Fale agora!")
         # Grava diretamente pelo sounddevice
         audio_data = sounddevice.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
         sounddevice.wait()  # Aguarda terminar a gravação
@@ -123,8 +123,20 @@ class Jarvis:
             print(f"Você disse: {texto}")
             return texto
         except sr.UnknownValueError:
-            print("Não entendi o áudio.")
+            if not self.em_espera:
+                print("Não entendi o áudio.")
             return None
+
+    def dormir(self):
+        self.em_espera = True
+        while True:
+            fala = self.usuario_falar()
+            if fala and "acordar" in fala.lower():
+                self.em_espera = False
+                print("Acordando...")
+                break
+            time.sleep(1)
+
     def voz(self, texto):
         voz = "pt-BR-AntonioNeural"
         arquivo_audio = "jarvis_fala.mp3"
