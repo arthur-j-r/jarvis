@@ -3,3 +3,4 @@ CACHEDIR.TAG
 teste.py
 autenticacaov15.py
 __pycache__/
+.env
