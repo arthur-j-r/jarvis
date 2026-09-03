@@ -23,7 +23,7 @@ class Jarvis:
     def __init__(self,username):
         self.me = 'Jarvis'
         self.username = username
-        #self.integracao_gemini = enviar_mensagem
+       # self.integracao_gemini = enviar_mensagem
     def saudar_usuario(self):
         saudacao = f'Olá Senhor {self.username}, eu sou {self.me}, seu assistente virtual. Como posso ajudá-lo hoje?'
         print(saudacao)
@@ -125,7 +125,14 @@ class Jarvis:
             print("Não entendi o áudio.")
             return None
     def jarvis_responder(self, texto):
-        resposta = enviar_mensagem(texto)
+        modo_ia = input("Deseja ativar a integração com a IA? (1 para sim, 0 para não): ")
+        if modo_ia == '1':
+            resposta = enviar_mensagem(texto, enabled=True)
+        elif modo_ia == '0':
+            resposta = texto
+        else:
+            print("Opção inválida. A integração com a IA não será ativada.")
+            resposta = texto
         voz = "pt-BR-AntonioNeural"
         arquivo_audio = "jarvis_fala.mp3"
         communicate = edge_tts.Communicate(
@@ -143,7 +150,8 @@ class Jarvis:
 ## EX DE USO           
 jarvis = Jarvis('Arthur')
 jarvis.saudar_usuario()
-jarvis.jarvis_responder(texto="Quem é Bruce Wayne?")
+fala = jarvis.usuario_falar()
+jarvis.pesquisar(fala)
 
 
 

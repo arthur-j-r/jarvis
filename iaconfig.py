@@ -34,22 +34,22 @@ chat = client.chats.create(
     )
 )
 
-def enviar_mensagem(prompt, tentativas_max=4):
-    tempo_espera = 2
-    
-    for tentativa in range(1, tentativas_max + 1):
-        try:
-            print(f"Tentativa {tentativa} de envio...")
-            
-            response = chat.send_message(prompt)
-            
-            return limpar_texto(response.text)
-            
-        except Exception as e:
-            print(f"Instabilidade detectada (Erro: {e}). Aguardando {tempo_espera}s...")
-            time.sleep(tempo_espera)
-            tempo_espera *= 2 
-    
+def enviar_mensagem(prompt, tentativas_max=4, enabled=False):
+    if enabled == True:
+        tempo_espera = 1
+        for tentativa in range(1, tentativas_max + 1):
+            try:
+                print(f"Tentativa {tentativa} de envio...")
+                
+                response = chat.send_message(prompt)
+                
+                return limpar_texto(response.text)
+                
+            except Exception as e:
+                print(f"Instabilidade detectada (Erro: {e}). Aguardando {tempo_espera}s...")
+                time.sleep(tempo_espera)
+                tempo_espera *= 2 
+        
     return "Não foi possível conectar aos servidores no momento devido à alta demanda."
 if __name__ == "__main__":
     resposta = enviar_mensagem("Boa tarde! Qual é o seu nome?")
