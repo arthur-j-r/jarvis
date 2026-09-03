@@ -9,23 +9,11 @@ import asyncio
 import edge_tts
 from playsound import playsound
 import os
-import os
 import sys
 import subprocess
 from PIL import Image
 from openai import OpenAI
-
-
-def chamar_chat_gpt(conteudo):
-    client = OpenAI(api_key=chat_gpt_autentication)
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Você é um assistente virtual chamado Jarvis."},
-            {"role": "user", "content": conteudo}
-        ]
-    )
-    return response.choices[0].message.content
+from iaconfig import enviar_mensagem
 
 
 pyautogui.PAUSE = 0.3
@@ -35,10 +23,11 @@ class Jarvis:
     def __init__(self,username):
         self.me = 'Jarvis'
         self.username = username
+        #self.integracao_gemini = enviar_mensagem
     def saudar_usuario(self):
         saudacao = f'Olá Senhor {self.username}, eu sou {self.me}, seu assistente virtual. Como posso ajudá-lo hoje?'
         print(saudacao)
-        self.jarvis_falar(texto=saudacao)
+        self.jarvis_responder(texto=saudacao)
     def abrir_programa(self,programa):
         try:
             pyautogui.press('win')
@@ -46,7 +35,7 @@ class Jarvis:
             pyautogui.write(programa)
             pyautogui.press('enter')
             programa_aberto = f'Programa {programa} aberto com sucesso!'
-            self.jarvis_falar(texto=programa_aberto)
+            self.jarvis_responder(texto=programa_aberto)
             print(programa_aberto)
         except Exception as e:
             print(f'Erro ao abrir o programa {programa}: {e}')
@@ -55,7 +44,7 @@ class Jarvis:
             pyautogui.hotkey('alt','f4')
             if programa is not None:
                 programa_fechado = f'Programa {programa} fechado com sucesso!'
-                self.jarvis_falar(texto=programa_fechado)
+                self.jarvis_responder(texto=programa_fechado)
                 print(programa_fechado)
         except Exception as e:
             print(f'Erro ao fechar o programa {programa}: {e}')
@@ -74,7 +63,7 @@ class Jarvis:
             pyautogui.press('enter')
             time.sleep(1)
             pesquisa_realizada = f'Pesquisa "{pesquisa}" realizada com sucesso!'
-            self.jarvis_falar(texto=pesquisa_realizada)
+            self.jarvis_responder(texto=pesquisa_realizada)
             print(pesquisa_realizada)
         except Exception as e:
             print(f'Erro ao realizar a pesquisa {pesquisa}: {e}')
@@ -85,7 +74,7 @@ class Jarvis:
             pyautogui.write(caminho_arquivo)
             pyautogui.press('enter')
             arquivo_aberto = f'Arquivo {caminho_arquivo} aberto com sucesso!'
-            self.jarvis_falar(texto=arquivo_aberto)
+            self.jarvis_responder(texto=arquivo_aberto)
             print(arquivo_aberto)
         except Exception as e:
             print(f'Erro ao abrir o arquivo {caminho_arquivo}: {e}')
@@ -94,7 +83,7 @@ class Jarvis:
             screenshot = pyautogui.screenshot()
             screenshot.save(nome_arquivo)
             captura = f'Print da tela salvo como {nome_arquivo}'
-            self.jarvis_falar(texto=captura)
+            self.jarvis_responder(texto=captura)
             print(captura)
         except Exception as e:
             print(f'Erro ao tirar print da tela: {e}')
@@ -106,7 +95,7 @@ class Jarvis:
             pyautogui.click()
             pyautogui.moveTo(x = 1089, y = 869, duration = 0.5)
             desligar = f'Desligando o computador...'
-            self.jarvis_falar(texto=desligar)
+            self.jarvis_responder(texto=desligar)
             time.sleep(1)
             pyautogui.doubleClick()
         except Exception as e:
@@ -135,13 +124,12 @@ class Jarvis:
         except sr.UnknownValueError:
             print("Não entendi o áudio.")
             return None
-    def jarvis_falar(self, texto):
+    def jarvis_responder(self, texto):
+        resposta = enviar_mensagem(texto)
         voz = "pt-BR-AntonioNeural"
         arquivo_audio = "jarvis_fala.mp3"
-
-        # +10% de velocidade e -2Hz no tom para um efeito mais sobrio e computacional
         communicate = edge_tts.Communicate(
-            texto, 
+            resposta, 
             voz, 
             rate="+10%", 
             pitch="-2Hz"
@@ -155,10 +143,7 @@ class Jarvis:
 ## EX DE USO           
 jarvis = Jarvis('Arthur')
 jarvis.saudar_usuario()
-'''
-jarvis.abrir_programa('google chrome')
-time.sleep(5)
-jarvis.fechar_programa('google chrome')
-jarvis.pesquisar('Python programming language')
-'''
+jarvis.jarvis_responder(texto="Quem é Bruce Wayne?")
+
+
 
